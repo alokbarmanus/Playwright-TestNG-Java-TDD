@@ -95,6 +95,13 @@ public class TestBase {
         Page page = browserContext.newPage();
         TL_PAGE.set(page);
 
+        // Apply configurable default timeout (overridable via -Dplaywright.wait.timeout=60000
+        // at the CLI so CI pipelines can increase it without touching source).
+        String timeoutProp = ConfigReader.getProperty("playwright.wait.timeout");
+        if (timeoutProp != null && !timeoutProp.isBlank()) {
+            page.setDefaultTimeout(Double.parseDouble(timeoutProp));
+        }
+
         page.navigate(ConfigReader.getEnvProperty("env.baseurl"));
     }
 
