@@ -1,0 +1,12 @@
+{
+  "validUser": {
+    "username": "UATAdmin",
+    "password": "uatadmin123",
+    "address": {
+      "street": "789 UAT Avenue",
+      "city": "UAT City",
+      "state": "TX",
+      "zip": "11223"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "validUser": {
+    "username": "SITAdmin",
+    "password": "sitadmin123"
+  },
+  "invalidUser": {
+    "username": "sitInvalidUser",
+    "password": "sitInvalidPassword"
+  },
+  "lockedUser": {
+    "username": "sitLockedUser",
+    "password": "sitLockedPassword"
+  }
+}

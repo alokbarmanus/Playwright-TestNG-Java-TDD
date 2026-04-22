@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  testng-sit-crossbrowser.xml  -  SIT environment cross-browser suite
+  Run: mvn clean test -Denv=sit -DsuiteFile=testngRunner/testng-sit-crossbrowser.xml
+
+  parallel="tests"   - each <test> block (one per browser) runs in its own thread.
+  thread-count="3"   - all 3 browsers run simultaneously.
+  Each thread gets its own Playwright/Browser/Page via TestBase's ThreadLocal pattern.
+  The <parameter name="browser" .../> in each <test> block overrides application.properties.
+-->
+<suite name="OrangeHRM Test Suite - SIT (Cross-Browser)" verbose="1"
+       parallel="tests" thread-count="3">
+
+    <listeners>
+        <listener class-name="com.orangehrm.listeners.ExtentReportListener"/>
+    </listeners>
+
+    <!-- Chromium -->
+    <test name="SIT - Chromium">
+        <parameter name="browser" value="chromium"/>
+        <classes>
+            <class name="com.orangehrm.tests.LoginPageTests"/>
+            <class name="com.orangehrm.tests.DashboardPageTests"/>
+        </classes>
+    </test>
+
+    <!-- Firefox -->
+    <test name="SIT - Firefox">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.orangehrm.tests.LoginPageTests"/>
+            <class name="com.orangehrm.tests.DashboardPageTests"/>
+        </classes>
+    </test>
+
+    <!-- WebKit (Safari engine) -->
+    <test name="SIT - WebKit">
+        <parameter name="browser" value="webkit"/>
+        <classes>
+            <class name="com.orangehrm.tests.LoginPageTests"/>
+            <class name="com.orangehrm.tests.DashboardPageTests"/>
+        </classes>
+    </test>
+
+</suite>

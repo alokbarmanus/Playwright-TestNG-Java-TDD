@@ -1,0 +1,12 @@
+{
+  "validUser": {
+    "username": "SITAdmin",
+    "password": "sitadmin123",
+    "address": {
+      "street": "456 SIT Street",
+      "city": "SIT City",
+      "state": "NY",
+      "zip": "67890"
+    }
+  }
+}

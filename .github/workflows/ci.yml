@@ -1,0 +1,84 @@
+name: CI - OrangeHRM Playwright Tests
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Triggers
+# ─────────────────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  # Allow manual runs from the Actions UI with an optional env override
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        default: 'dev'
+        type: choice
+        options: [ dev, sit, uat ]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  test:
+    name: Tests - ${{ matrix.env }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Let all environments finish even if one fails
+      fail-fast: false
+      matrix:
+        env: [ dev, sit, uat ]
+
+    steps:
+
+      # ── 1. Checkout source code ──────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Set up JDK 25 ─────────────────────────────────────────────────
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # ── 3. Install Playwright browsers & OS dependencies ─────────────────
+      #   Compiles test sources first so the Playwright CLI jar is on the
+      #   classpath, then runs the built-in CLI to download all three browser
+      #   engines (chromium, firefox, webkit) along with their system deps.
+      - name: Install Playwright browsers
+        run: |
+          mvn -q test-compile \
+              exec:java \
+              -Dexec.mainClass=com.microsoft.playwright.CLI \
+              -Dexec.args="install --with-deps" \
+              -Dexec.classpathScope=test
+
+      # ── 4. Run test suite ─────────────────────────────────────────────────
+      #   -Dheadless=true  overrides application.properties at runtime so the
+      #                    browser runs headless inside the CI container.
+      #   -Denv            selects the environment-specific properties + data.
+      - name: Run tests (${{ matrix.env }})
+        run: mvn clean test -Denv=${{ matrix.env }} -Dheadless=true
+
+      # ── 5. Upload ExtentReports HTML ──────────────────────────────────────
+      - name: Upload Extent Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-reports-${{ matrix.env }}
+          path: target/extent-reports/
+          retention-days: 30
+
+      # ── 6. Upload Surefire XML / HTML reports ─────────────────────────────
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-${{ matrix.env }}
+          path: target/surefire-reports/
+          retention-days: 30

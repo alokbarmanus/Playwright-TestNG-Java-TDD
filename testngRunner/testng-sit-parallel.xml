@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+  testng-sit-parallel.xml  -  SIT environment parallel test suite
+  Run: mvn clean test -Denv=sit -DsuiteFile=testngRunner/testng-sit-parallel.xml
+
+  parallel="tests"  - each <test> block runs in its own thread simultaneously.
+  thread-count="2"  - number of concurrent threads (one per <test> block below).
+  Each test class gets its own browser instance via TestBase's ThreadLocal pattern,
+  so execution is fully isolated and parallel-safe.
+-->
+<suite name="OrangeHRM Test Suite - SIT (Parallel)" verbose="1"
+       parallel="tests" thread-count="2">
+
+    <listeners>
+        <listener class-name="com.orangehrm.listeners.ExtentReportListener"/>
+    </listeners>
+
+    <!-- Thread 1: Login page tests -->
+    <test name="Login Tests - SIT">
+        <classes>
+            <class name="com.orangehrm.tests.LoginPageTests"/>
+        </classes>
+    </test>
+
+    <!-- Thread 2: Dashboard page tests -->
+    <test name="Dashboard Tests - SIT">
+        <classes>
+            <class name="com.orangehrm.tests.DashboardPageTests"/>
+        </classes>
+    </test>
+
+</suite>

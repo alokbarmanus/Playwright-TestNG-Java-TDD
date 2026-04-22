@@ -1,0 +1,14 @@
+{
+  "validUser": {
+    "username": "UATAdmin",
+    "password": "uatadmin123"
+  },
+  "invalidUser": {
+    "username": "uatInvalidUser",
+    "password": "uatInvalidPassword"
+  },
+  "lockedUser": {
+    "username": "uatLockedUser",
+    "password": "uatLockedPassword"
+  }
+}
