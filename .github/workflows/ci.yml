@@ -8,7 +8,8 @@ on:
     branches: [ main, master, develop ]
   pull_request:
     branches: [ main, master, develop ]
-  # Allow manual runs from the Actions UI with an optional env override
+  # Manual trigger: choose which environment to test.
+  # On push / pull_request the environment is always "dev".
   workflow_dispatch:
     inputs:
       environment:
@@ -17,6 +18,118 @@ on:
         default: 'dev'
         type: choice
         options: [ dev, sit, uat ]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Global env vars
+# ─────────────────────────────────────────────────────────────────────────────
+env:
+  JAVA_VERSION: '25'
+  # Opt into Node.js 24 now to suppress the Node.js 20 deprecation warnings
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+
+  # ── Job 1: Build ────────────────────────────────────────────────────────────
+  # Compiles all sources and acts as a gate before the test job starts.
+  # If compilation fails the test job is skipped immediately.
+  # ────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build (compile sources)
+        run: mvn clean test-compile -q
+
+  # ── Job 2: Test ─────────────────────────────────────────────────────────────
+  # On push / pull_request  →  always runs against DEV.
+  # On workflow_dispatch    →  runs against the environment chosen in the dropdown.
+  # ────────────────────────────────────────────────────────────────────────────
+  test:
+    name: Tests - ${{ github.event.inputs.environment || 'dev' }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+
+      # ── 1. Resolve target environment ────────────────────────────────────
+      # Push / PR → dev.   Manual dispatch → value chosen in the dropdown.
+      - name: Set target environment
+        run: |
+          ENV="${{ github.event.inputs.environment || 'dev' }}"
+          echo "TARGET_ENV=$ENV" >> $GITHUB_ENV
+          echo "Running tests against environment: $ENV"
+
+      # ── 2. Checkout ──────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 3. JDK ───────────────────────────────────────────────────────────
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # ── 4. Build ─────────────────────────────────────────────────────────
+      - name: Build (compile sources)
+        run: mvn clean test-compile -q
+
+      # ── 5. Playwright browsers ───────────────────────────────────────────
+      # Downloads Chromium, Firefox, and WebKit engines plus their OS-level
+      # system dependencies so all three browsers are available for tests.
+      - name: Install Playwright browsers
+        run: |
+          mvn exec:java \
+            -Dexec.mainClass=com.microsoft.playwright.CLI \
+            -Dexec.args="install --with-deps" \
+            -Dexec.classpathScope=test
+
+      # ── 6. Run tests ─────────────────────────────────────────────────────
+      # -Dheadless=true            : CI always runs headless (local default is headed).
+      # -Dplaywright.wait.timeout  : 60 s — CI networks are slower than local machines.
+      # -Dsurefire.rerunFailingTestsCount=2 : retry each failed test up to 2 times
+      #                              to tolerate transient demo-site flakiness.
+      - name: Run tests (${{ env.TARGET_ENV }})
+        run: |
+          mvn test \
+            -Denv=${{ env.TARGET_ENV }} \
+            -Dheadless=true \
+            -Dplaywright.wait.timeout=60000 \
+            -Dsurefire.rerunFailingTestsCount=2
+
+      # ── 7. Upload ExtentReports ──────────────────────────────────────────
+      - name: Upload Extent Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extent-reports-${{ env.TARGET_ENV }}
+          path: target/extent-reports/
+          retention-days: 30
+
+      # ── 8. Upload Surefire reports ───────────────────────────────────────
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-${{ env.TARGET_ENV }}
+          path: target/surefire-reports/
+          retention-days: 30
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Global env vars
