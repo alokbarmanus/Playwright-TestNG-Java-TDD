@@ -8,8 +8,8 @@ on:
     branches: [ main, master, develop ]
   pull_request:
     branches: [ main, master, develop ]
-  # Manual trigger: choose which environment to test.
-  # On push / pull_request the environment is always "dev".
+  # Manual trigger: choose environment and suite type.
+  # On push / pull_request: environment=dev, suite=sequential.
   workflow_dispatch:
     inputs:
       environment:
@@ -18,6 +18,12 @@ on:
         default: 'dev'
         type: choice
         options: [ dev, sit, uat ]
+      suite_type:
+        description: 'Test suite type'
+        required: true
+        default: 'sequential'
+        type: choice
+        options: [ sequential, parallel, crossbrowser ]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Global env vars
@@ -53,23 +59,36 @@ jobs:
         run: mvn clean test-compile -q
 
   # ── Job 2: Test ─────────────────────────────────────────────────────────────
-  # On push / pull_request  →  always runs against DEV.
-  # On workflow_dispatch    →  runs against the environment chosen in the dropdown.
+  # On push / pull_request  →  DEV environment, sequential suite.
+  # On workflow_dispatch    →  environment + suite type from the dropdowns.
   # ────────────────────────────────────────────────────────────────────────────
   test:
-    name: Tests - ${{ github.event.inputs.environment || 'dev' }}
+    name: Tests - ${{ github.event.inputs.environment || 'dev' }} (${{ github.event.inputs.suite_type || 'sequential' }})
     runs-on: ubuntu-latest
     needs: build
 
     steps:
 
-      # ── 1. Resolve target environment ────────────────────────────────────
-      # Push / PR → dev.   Manual dispatch → value chosen in the dropdown.
-      - name: Set target environment
+      # ── 1. Resolve target environment and suite type ──────────────────────
+      # Push / PR → dev + sequential.  Manual dispatch → chosen values.
+      - name: Set target environment and suite
         run: |
           ENV="${{ github.event.inputs.environment || 'dev' }}"
-          echo "TARGET_ENV=$ENV" >> $GITHUB_ENV
-          echo "Running tests against environment: $ENV"
+          SUITE="${{ github.event.inputs.suite_type || 'sequential' }}"
+
+          # Map suite_type to the correct testng XML filename suffix
+          if [ "$SUITE" = "sequential" ]; then
+            SUITE_FILE="testngRunner/testng-${ENV}.xml"
+          elif [ "$SUITE" = "parallel" ]; then
+            SUITE_FILE="testngRunner/testng-${ENV}-parallel.xml"
+          else
+            SUITE_FILE="testngRunner/testng-${ENV}-crossbrowser.xml"
+          fi
+
+          echo "TARGET_ENV=$ENV"         >> $GITHUB_ENV
+          echo "TARGET_SUITE=$SUITE"     >> $GITHUB_ENV
+          echo "TARGET_SUITE_FILE=$SUITE_FILE" >> $GITHUB_ENV
+          echo "Environment: $ENV | Suite: $SUITE | File: $SUITE_FILE"
 
       # ── 2. Checkout ──────────────────────────────────────────────────────
       - name: Checkout repository
@@ -102,10 +121,11 @@ jobs:
       # -Dplaywright.wait.timeout  : 60 s — CI networks are slower than local machines.
       # -Dsurefire.rerunFailingTestsCount=2 : retry each failed test up to 2 times
       #                              to tolerate transient demo-site flakiness.
-      - name: Run tests (${{ env.TARGET_ENV }})
+      - name: Run tests (${{ env.TARGET_ENV }} / ${{ env.TARGET_SUITE }})
         run: |
           mvn test \
             -Denv=${{ env.TARGET_ENV }} \
+            -DsuiteFile=${{ env.TARGET_SUITE_FILE }} \
             -Dheadless=true \
             -Dplaywright.wait.timeout=60000 \
             -Dsurefire.rerunFailingTestsCount=2
@@ -115,7 +135,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: extent-reports-${{ env.TARGET_ENV }}
+          name: extent-reports-${{ env.TARGET_ENV }}-${{ env.TARGET_SUITE }}
           path: target/extent-reports/
           retention-days: 30
 
@@ -124,7 +144,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: surefire-reports-${{ env.TARGET_ENV }}
+          name: surefire-reports-${{ env.TARGET_ENV }}-${{ env.TARGET_SUITE }}
           path: target/surefire-reports/
           retention-days: 30
 

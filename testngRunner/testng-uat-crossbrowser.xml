@@ -23,6 +23,8 @@
         <classes>
             <class name="com.orangehrm.tests.LoginPageTests"/>
             <class name="com.orangehrm.tests.DashboardPageTests"/>
+            <class name="com.orangehrm.tests.AdminPageTests"/>
+            <class name="com.orangehrm.tests.MyInfoPageTests"/>
         </classes>
     </test>
 
@@ -32,6 +34,8 @@
         <classes>
             <class name="com.orangehrm.tests.LoginPageTests"/>
             <class name="com.orangehrm.tests.DashboardPageTests"/>
+            <class name="com.orangehrm.tests.AdminPageTests"/>
+            <class name="com.orangehrm.tests.MyInfoPageTests"/>
         </classes>
     </test>
 
@@ -41,6 +45,8 @@
         <classes>
             <class name="com.orangehrm.tests.LoginPageTests"/>
             <class name="com.orangehrm.tests.DashboardPageTests"/>
+            <class name="com.orangehrm.tests.AdminPageTests"/>
+            <class name="com.orangehrm.tests.MyInfoPageTests"/>
         </classes>
     </test>
 

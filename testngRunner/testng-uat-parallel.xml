@@ -11,7 +11,7 @@
   so execution is fully isolated and parallel-safe.
 -->
 <suite name="OrangeHRM Test Suite - UAT (Parallel)" verbose="1"
-       parallel="tests" thread-count="2">
+       parallel="tests" thread-count="4">
 
     <listeners>
         <listener class-name="com.orangehrm.listeners.ExtentReportListener"/>
@@ -28,6 +28,20 @@
     <test name="Dashboard Tests - UAT">
         <classes>
             <class name="com.orangehrm.tests.DashboardPageTests"/>
+        </classes>
+    </test>
+
+    <!-- Thread 3: Admin page tests -->
+    <test name="Admin Tests - UAT">
+        <classes>
+            <class name="com.orangehrm.tests.AdminPageTests"/>
+        </classes>
+    </test>
+
+    <!-- Thread 4: My Info / Personal Details tests -->
+    <test name="MyInfo Tests - UAT">
+        <classes>
+            <class name="com.orangehrm.tests.MyInfoPageTests"/>
         </classes>
     </test>
 

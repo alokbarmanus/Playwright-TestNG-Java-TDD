@@ -77,16 +77,31 @@ public class TestBase {
         String browserName = (browserParam != null && !browserParam.isBlank())
                 ? browserParam
                 : ConfigReader.getProperty("browser.name");
-        boolean headless   = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+        boolean headless         = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+        boolean remoteExecution  = Boolean.parseBoolean(ConfigReader.getProperty("remote.execution"));
 
-        BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
-                .setHeadless(headless);
-
-        Browser browser = switch (browserName.toLowerCase()) {
-            case "firefox" -> playwright.firefox().launch(launchOptions);
-            case "webkit"  -> playwright.webkit().launch(launchOptions);
-            default        -> playwright.chromium().launch(launchOptions);
-        };
+        Browser browser;
+        if (remoteExecution) {
+            // ── Remote mode: connect to a running Playwright Browser Server ──
+            // Start the server on the remote machine with:
+            //   mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI \
+            //     -Dexec.args="run-server --port 8080" -Dexec.classpathScope=test
+            String wsUrl = ConfigReader.getProperty("remote.server.url");
+            browser = switch (browserName.toLowerCase()) {
+                case "firefox" -> playwright.firefox().connect(wsUrl);
+                case "webkit"  -> playwright.webkit().connect(wsUrl);
+                default        -> playwright.chromium().connect(wsUrl);
+            };
+        } else {
+            // ── Local mode: launch a browser process on this machine ──────────
+            BrowserType.LaunchOptions launchOptions = new BrowserType.LaunchOptions()
+                    .setHeadless(headless);
+            browser = switch (browserName.toLowerCase()) {
+                case "firefox" -> playwright.firefox().launch(launchOptions);
+                case "webkit"  -> playwright.webkit().launch(launchOptions);
+                default        -> playwright.chromium().launch(launchOptions);
+            };
+        }
         TL_BROWSER.set(browser);
 
         BrowserContext browserContext = browser.newContext();
