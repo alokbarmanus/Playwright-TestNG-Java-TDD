@@ -92,6 +92,7 @@ public class AdminPageObjects {
         String adminUrl = ConfigReader.getEnvProperty("env.baseurl")
                 .replace("auth/login", "admin/viewSystemUsers");
         page.navigate(adminUrl);
+        page.waitForLoadState(LoadState.NETWORKIDLE);
     }
 
     /**
@@ -148,6 +149,7 @@ public class AdminPageObjects {
      * button, Reset button) are all visible.
      */
     public boolean isSearchFormDisplayed() {
+        searchUsernameInput.waitFor();
         return searchUsernameInput.isVisible()
                 && searchButton.isVisible()
                 && resetButton.isVisible();
@@ -192,6 +194,7 @@ public class AdminPageObjects {
 
     /** Returns the number of data rows currently visible in the table body. */
     public int getTableRowCount() {
+        tableContainer.waitFor();
         return tableRows.count();
     }
 
@@ -200,6 +203,7 @@ public class AdminPageObjects {
      * excluding any blank entries (e.g. the Actions column checkbox cell).
      */
     public List<String> getTableHeaderTexts() {
+        tableHeaderCells.first().waitFor();
         return tableHeaderCells.allTextContents()
                 .stream()
                 .map(String::trim)
