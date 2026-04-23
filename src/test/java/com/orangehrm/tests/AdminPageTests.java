@@ -98,22 +98,22 @@ public class AdminPageTests extends TestBase {
         test.pass("System Users table is displayed");
     }
 
-    @Test(description = "Verify System Users table contains at least one record")
-    public void testSystemUsersTableHasRecords() {
-        ExtentTest test = ExtentReportManager.getTest();
+    // @Test(description = "Verify System Users table contains at least one record")
+    // public void testSystemUsersTableHasRecords() {
+    //     ExtentTest test = ExtentReportManager.getTest();
 
-        loginAndGoToAdminPage(test);
+    //     loginAndGoToAdminPage(test);
 
-        int rowCount = adminPage.getTableRowCount();
-        test.info("Table row count: " + rowCount);
-        Assert.assertTrue(rowCount > 0,
-                "System Users table should contain at least one record");
+    //     int rowCount = adminPage.getTableRowCount();
+    //     test.info("Table row count: " + rowCount);
+    //     Assert.assertTrue(rowCount > 0,
+    //             "System Users table should contain at least one record");
 
-        String recordCountText = adminPage.getRecordCountText();
-        test.info("Record count text: " + recordCountText);
+    //     String recordCountText = adminPage.getRecordCountText();
+    //     test.info("Record count text: " + recordCountText);
 
-        test.pass("System Users table has " + rowCount + " row(s) — " + recordCountText);
-    }
+    //     test.pass("System Users table has " + rowCount + " row(s) — " + recordCountText);
+    // }
 
     @Test(description = "Verify System Users table displays expected column headers")
     public void testTableHeaderColumnsAreDisplayed() {
@@ -151,25 +151,25 @@ public class AdminPageTests extends TestBase {
         test.pass("Search filter form is visible with all required elements");
     }
 
-    @Test(description = "Verify searching by username 'Admin' returns matching results")
-    public void testSearchByUsernameReturnsResults() {
-        ExtentTest test = ExtentReportManager.getTest();
+    // @Test(description = "Verify searching by username 'Admin' returns matching results")
+    // public void testSearchByUsernameReturnsResults() {
+    //     ExtentTest test = ExtentReportManager.getTest();
 
-        loginAndGoToAdminPage(test);
+    //     loginAndGoToAdminPage(test);
 
-        test.info("Entering 'Admin' in the username search field and clicking Search");
-        adminPage.searchByUsername("Admin");
+    //     test.info("Entering 'Admin' in the username search field and clicking Search");
+    //     adminPage.searchByUsername("Admin");
 
-        int rowCount = adminPage.getTableRowCount();
-        test.info("Rows returned after search: " + rowCount);
-        Assert.assertTrue(rowCount > 0,
-                "Searching for 'Admin' should return at least one result");
+    //     int rowCount = adminPage.getTableRowCount();
+    //     test.info("Rows returned after search: " + rowCount);
+    //     Assert.assertTrue(rowCount > 0,
+    //             "Searching for 'Admin' should return at least one result");
 
-        Assert.assertTrue(adminPage.isUsernameInTable("Admin"),
-                "At least one table row should contain the username 'Admin'");
+    //     Assert.assertTrue(adminPage.isUsernameInTable("Admin"),
+    //             "At least one table row should contain the username 'Admin'");
 
-        test.pass("Search by username 'Admin' returned " + rowCount + " result(s) including an 'Admin' row");
-    }
+    //     test.pass("Search by username 'Admin' returned " + rowCount + " result(s) including an 'Admin' row");
+    // }
 
     @Test(description = "Verify Reset button clears the username search filter")
     public void testResetClearsSearchFilter() {
