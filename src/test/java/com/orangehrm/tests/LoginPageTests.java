@@ -53,7 +53,7 @@ public class LoginPageTests extends TestBase {
     // Test methods
     // -----------------------------------------------------------------------
 
-    @Test(description = "Verify successful login with valid credentials")
+    @Test(description = "LoginPage: Verify successful login with valid credentials")
     public void testSuccessfulLogin() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -72,7 +72,7 @@ public class LoginPageTests extends TestBase {
         test.pass("Dashboard is visible - successful login confirmed");
     }
 
-    @Test(description = "Verify login fails with invalid credentials")
+    @Test(description = "LoginPage: Verify login fails with invalid credentials")
     public void testLoginWithInvalidCredentials() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -89,7 +89,7 @@ public class LoginPageTests extends TestBase {
         test.pass("Error message displayed as expected: \"" + errorMsg + "\"");
     }
 
-    @Test(description = "Verify login page title")
+    @Test(description = "LoginPage: Verify login page title")
     public void testLoginPageTitle() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -101,7 +101,7 @@ public class LoginPageTests extends TestBase {
         test.pass("Page title is present: \"" + title + "\"");
     }
 
-    @Test(description = "Print all registration nested data values from JSON using Map")
+    @Test(description = "LoginPage: Print all registration nested data values from JSON using Map")
     public void testPrintRegistrationDataAsMap() {
         ExtentTest test = ExtentReportManager.getTest();
 

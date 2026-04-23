@@ -62,7 +62,7 @@ public class DashboardPageTests extends TestBase {
     // Test methods
     // -----------------------------------------------------------------------
 
-    @Test(description = "Verify dashboard URL and page title after login")
+    @Test(description = "DashboardPage: Verify dashboard URL and page title after login")
     public void testDashboardUrlAndTitle() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -76,7 +76,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Dashboard URL and page title verified — title: \"" + title + "\"");
     }
 
-    @Test(description = "Verify top navigation bar is visible on dashboard")
+    @Test(description = "DashboardPage: Verify top navigation bar is visible on dashboard")
     public void testTopbarIsVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -90,7 +90,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Top navigation bar is visible");
     }
 
-    @Test(description = "Verify logged-in user's display name is shown in the top bar")
+    @Test(description = "DashboardPage: Verify logged-in user's display name is shown in the top bar")
     public void testLoggedInUserNameIsDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -105,7 +105,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Logged-in user display name is shown: \"" + userName + "\"");
     }
 
-    @Test(description = "Verify left side navigation menu is visible with expected items")
+    @Test(description = "DashboardPage: Verify left side navigation menu is visible with expected items")
     public void testSideNavigationMenuIsVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -125,7 +125,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Side navigation menu is visible with " + itemCount + " items");
     }
 
-    @Test(description = "Verify dashboard widgets are displayed")
+    @Test(description = "DashboardPage: Verify dashboard widgets are displayed")
     public void testDashboardWidgetsAreDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -142,7 +142,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Dashboard is displaying " + widgetCount + " widgets: " + widgetNames);
     }
 
-    @Test(description = "Verify Quick Launch shortcuts are displayed on the dashboard")
+    @Test(description = "DashboardPage: Verify Quick Launch shortcuts are displayed on the dashboard")
     public void testQuickLaunchItemsAreDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -157,7 +157,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Quick Launch section is visible with " + quickLaunchCount + " shortcuts");
     }
 
-    @Test(description = "Verify user can navigate to Admin page from the dashboard menu")
+    @Test(description = "DashboardPage: Verify user can navigate to Admin page from the dashboard menu")
     public void testNavigateToAdminPage() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -174,7 +174,7 @@ public class DashboardPageTests extends TestBase {
         test.pass("Successfully navigated to Admin page — URL: " + currentUrl);
     }
 
-    @Test(description = "Verify user can logout from the dashboard")
+    @Test(description = "DashboardPage: Verify user can logout from the dashboard")
     public void testLogout() {
         ExtentTest test = ExtentReportManager.getTest();
 

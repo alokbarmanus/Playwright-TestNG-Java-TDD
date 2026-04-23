@@ -67,7 +67,7 @@ public class AdminPageTests extends TestBase {
     // Test methods
     // -----------------------------------------------------------------------
 
-    @Test(description = "Verify Admin page is accessible and 'System Users' heading is displayed")
+    @Test(description = "AdminPage: Verify Admin page is accessible and 'System Users' heading is displayed")
     public void testAdminPageIsAccessible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -85,7 +85,7 @@ public class AdminPageTests extends TestBase {
         test.pass("Admin page is accessible — 'System Users' heading visible, title: \"" + title + "\"");
     }
 
-    @Test(description = "Verify System Users table is displayed on the Admin page")
+    @Test(description = "AdminPage: Verify System Users table is displayed on the Admin page")
     public void testSystemUsersTableIsDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -98,7 +98,7 @@ public class AdminPageTests extends TestBase {
         test.pass("System Users table is displayed");
     }
 
-    // @Test(description = "Verify System Users table contains at least one record")
+    // @Test(description = "AdminPage: Verify System Users table contains at least one record")
     // public void testSystemUsersTableHasRecords() {
     //     ExtentTest test = ExtentReportManager.getTest();
 
@@ -115,7 +115,7 @@ public class AdminPageTests extends TestBase {
     //     test.pass("System Users table has " + rowCount + " row(s) — " + recordCountText);
     // }
 
-    @Test(description = "Verify System Users table displays expected column headers")
+    @Test(description = "AdminPage: Verify System Users table displays expected column headers")
     public void testTableHeaderColumnsAreDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -138,7 +138,7 @@ public class AdminPageTests extends TestBase {
         test.pass("All expected column headers are present: " + headers);
     }
 
-    @Test(description = "Verify search filter form elements are visible on the Admin page")
+    @Test(description = "AdminPage: Verify search filter form elements are visible on the Admin page")
     public void testSearchFormIsDisplayed() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -151,7 +151,7 @@ public class AdminPageTests extends TestBase {
         test.pass("Search filter form is visible with all required elements");
     }
 
-    // @Test(description = "Verify searching by username 'Admin' returns matching results")
+    // @Test(description = "AdminPage: Verify searching by username 'Admin' returns matching results")
     // public void testSearchByUsernameReturnsResults() {
     //     ExtentTest test = ExtentReportManager.getTest();
 
@@ -171,7 +171,7 @@ public class AdminPageTests extends TestBase {
     //     test.pass("Search by username 'Admin' returned " + rowCount + " result(s) including an 'Admin' row");
     // }
 
-    @Test(description = "Verify Reset button clears the username search filter")
+    @Test(description = "AdminPage: Verify Reset button clears the username search filter")
     public void testResetClearsSearchFilter() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -191,7 +191,7 @@ public class AdminPageTests extends TestBase {
         test.pass("Reset button successfully cleared the username filter field");
     }
 
-    @Test(description = "Verify the Add button is visible and enabled on the Admin page")
+    @Test(description = "AdminPage: Verify the Add button is visible and enabled on the Admin page")
     public void testAddButtonIsVisibleAndEnabled() {
         ExtentTest test = ExtentReportManager.getTest();
 

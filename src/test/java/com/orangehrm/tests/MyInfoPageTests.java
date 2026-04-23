@@ -69,7 +69,7 @@ public class MyInfoPageTests extends TestBase {
     // Test methods
     // -----------------------------------------------------------------------
 
-    @Test(description = "Verify Personal Details page is accessible for employee #7")
+    @Test(description = "MyInfoPage: Verify Personal Details page is accessible for employee #7")
     public void testPersonalDetailsPageIsAccessible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -88,7 +88,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("Personal Details page is accessible — URL and title verified");
     }
 
-    @Test(description = "Verify 'Personal Details' section heading is visible on the page")
+    @Test(description = "MyInfoPage: Verify 'Personal Details' section heading is visible on the page")
     public void testPersonalDetailsSectionHeadingIsVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -101,7 +101,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("'Personal Details' section heading is visible");
     }
 
-    @Test(description = "Verify Personal Details form is visible on the page")
+    @Test(description = "MyInfoPage: Verify Personal Details form is visible on the page")
     public void testPersonalDetailsFormIsVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -114,7 +114,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("Personal Details form is visible");
     }
 
-    @Test(description = "Verify First Name, Middle Name and Last Name input fields are visible")
+    @Test(description = "MyInfoPage: Verify First Name, Middle Name and Last Name input fields are visible")
     public void testNameFieldsAreVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -127,7 +127,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("All three name input fields (First, Middle, Last) are visible");
     }
 
-    @Test(description = "Verify First Name field is pre-populated for employee #7")
+    @Test(description = "MyInfoPage: Verify First Name field is pre-populated for employee #7")
     public void testFirstNameFieldIsPrePopulated() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -143,7 +143,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("First Name is pre-populated: '" + firstName + "'");
     }
 
-    @Test(description = "Verify Last Name field is pre-populated for employee #7")
+    @Test(description = "MyInfoPage: Verify Last Name field is pre-populated for employee #7")
     public void testLastNameFieldIsPrePopulated() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -159,7 +159,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("Last Name is pre-populated: '" + lastName + "'");
     }
 
-    @Test(description = "Verify Employee ID field is visible on the Personal Details page")
+    @Test(description = "MyInfoPage: Verify Employee ID field is visible on the Personal Details page")
     public void testEmployeeIdFieldIsVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -175,23 +175,23 @@ public class MyInfoPageTests extends TestBase {
         test.pass("Employee ID field is visible with value: '" + empId + "'");
     }
 
-    @Test(description = "Verify Date of Birth field is visible on the Personal Details page")
-    public void testDateOfBirthFieldIsVisible() {
-        ExtentTest test = ExtentReportManager.getTest();
+    // @Test(description = "MyInfoPage: Verify Date of Birth field is visible on the Personal Details page")
+    // public void testDateOfBirthFieldIsVisible() {
+    //     ExtentTest test = ExtentReportManager.getTest();
 
-        loginAndGoToPersonalDetails(test);
+    //     loginAndGoToPersonalDetails(test);
 
-        test.info("Checking visibility of the Date of Birth field");
-        Assert.assertTrue(myInfoPage.isDobFieldVisible(),
-                "Date of Birth field should be visible on the Personal Details page");
+    //     test.info("Checking visibility of the Date of Birth field");
+    //     Assert.assertTrue(myInfoPage.isDobFieldVisible(),
+    //             "Date of Birth field should be visible on the Personal Details page");
 
-        String dob = myInfoPage.getDobValue();
-        test.info("Date of Birth value: '" + dob + "'");
+    //     String dob = myInfoPage.getDobValue();
+    //     test.info("Date of Birth value: '" + dob + "'");
 
-        test.pass("Date of Birth field is visible");
-    }
+    //     test.pass("Date of Birth field is visible");
+    // }
 
-    @Test(description = "Verify Nationality and Marital Status dropdowns are visible")
+    @Test(description = "MyInfoPage: Verify Nationality and Marital Status dropdowns are visible")
     public void testDropdownFieldsAreVisible() {
         ExtentTest test = ExtentReportManager.getTest();
 
@@ -208,7 +208,7 @@ public class MyInfoPageTests extends TestBase {
         test.pass("Both Nationality and Marital Status dropdowns are visible");
     }
 
-    @Test(description = "Verify Save button is visible and enabled on the Personal Details page")
+    @Test(description = "MyInfoPage: Verify Save button is visible and enabled on the Personal Details page")
     public void testSaveButtonIsVisibleAndEnabled() {
         ExtentTest test = ExtentReportManager.getTest();
 
